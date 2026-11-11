@@ -19,3 +19,7 @@ Our project uses two Supabase API keys:
 | Maintenance | We manage PostgreSQL installation, updates, and server maintenance. | Supabase manages the cloud infrastructure, while we manage our database design and settings. |
 
 **DBA Responsibility:** Even when using Supabase, we still need to manage database security, check access permissions, maintain the database structure, monitor performance, and make sure our data is properly protected.
+
+5c7482f0-c035-4009-83f4-bce8ca7367e1 aronnidea@gmail.com
+a82c0fad-96f7-4afb-b436-21cec637de3f cedric@gmail.com
+e7746cd0-a000-4c48-b8f2-b0d0ccc13b93 jessemina06@gmail.com
