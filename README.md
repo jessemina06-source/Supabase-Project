@@ -24,30 +24,39 @@ Our project uses two Supabase API keys:
 a82c0fad-96f7-4afb-b436-21cec637de3f cedric@gmail.com
 e7746cd0-a000-4c48-b8f2-b0d0ccc13b93 jessemina06@gmail.com
 
-Test results: expected vs actual
-Read tests (rows seen: books / members / loans / reviews)
-Test	Person	Expected	Actual	
-R1	Visitor	3 / 0 / 0 / 2		
-R2	Member A	3 / 1 / 2 / 2		
-R3	Member B	3 / 1 / 2 / 2		
-R4	Librarian	3 / 2 / 4 / 2	
+## Test results: expected vs actual
 
-Write tests
-Test	Person	Action	Expected	Actual	
-W1	Librarian	Insert a book	Succeeds, 1 row returned		
-W2	Member A	Insert a book	Error: violates row-level security policy for “books”		
-W3	Member A	Update Member B’s row	0 rows, no error (blocked silently by USING)		
-W4	Member A	Change own user_id to another login	Error: violates row-level security policy for “members” (WITH CHECK)		
-W5	Member A	Insert a review with Member B’s member_id	Error: violates row-level security policy for “reviews”		
-W6	Member A	Insert a review with own member_id	Succeeds, 1 row returned		
-W7	Member A	Delete Member B’s review	0 rows, no error		
-W8	Member A	Insert a loan	Error: violates row-level security policy for “loans”	
+### Read tests (rows seen: books / members / loans / reviews)
 
-Forged-claim tests 
-Test	Action	Expected	Actual	
-F1	Read all four tables	3 / 1 / 2 / 2 (same as Member A)		
-F2	Insert a book	Error: violates row-level security policy for “books”		
-F3	Update Member B’s loan	0 rows
+| Test | Person    | Expected      | Actual |
+|------|-----------|---------------|--------|
+| R1   | Visitor   | 3 / 0 / 0 / 2 |        |
+| R2   | Member A  | 3 / 1 / 2 / 2 |        |
+| R3   | Member B  | 3 / 1 / 2 / 2 |        |
+| R4   | Librarian | 3 / 2 / 4 / 2 |        |
+
+### Write tests
+
+| Test | Person    | Action                                    | Expected                                                              | Actual |
+|------|-----------|-------------------------------------------|-----------------------------------------------------------------------|--------|
+| W1   | Librarian | Insert a book                             | Succeeds, 1 row returned                                              |        |
+| W2   | Member A  | Insert a book                             | Error: violates row-level security policy for "books"                 |        |
+| W3   | Member A  | Update Member B's row                     | 0 rows, no error (blocked silently by USING)                          |        |
+| W4   | Member A  | Change own `user_id` to another login     | Error: violates row-level security policy for "members" (WITH CHECK)  |        |
+| W5   | Member A  | Insert a review with Member B's member_id | Error: violates row-level security policy for "reviews"               |        |
+| W6   | Member A  | Insert a review with own member_id        | Succeeds, 1 row returned                                              |        |
+| W7   | Member A  | Delete Member B's review                  | 0 rows, no error                                                      |        |
+| W8   | Member A  | Insert a loan                             | Error: violates row-level security policy for "loans"                 |        |
+
+### Forged-claim tests
+
+Token claims: `user_metadata.role = librarian`, `app_metadata.role = member`.
+
+| Test | Action                | Expected                                              | Actual |
+|------|-----------------------|-------------------------------------------------------|--------|
+| F1   | Read all four tables  | 3 / 1 / 2 / 2 (same as Member A)                      |        |
+| F2   | Insert a book         | Error: violates row-level security policy for "books" |        |
+| F3   | Update Member B's loan | 0 rows                                               |        |
 
 1. Why does running a query in the SQL Editor as postgres not prove that a policy works?
 
