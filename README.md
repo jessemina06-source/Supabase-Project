@@ -55,6 +55,6 @@ The postgres role owns the tables and has the BYPASSRLS attribute, so Postgres n
 
 2. What would happen to our policies if a request used the secret key, and why is that dangerous in a browser?
 
-The secret key maps to the service_role, which bypasses RLS, so every policy would be skipped and the request could read, change, or delete any row in any table. That includes actions our rules forbid, such as deleting members or editing loans. In a browser, anyone can open DevTools and copy the key from the page’s code or network requests, giving them full access to the whole database. The secret key belongs only on a trusted server, and only the publishable key should be used in client code.
+The secret key maps to the service_role, which bypasses RLS, so every policy would be skipped and the request could read, change, or delete any row in any table. That includes actions our rules forbid, such as deleting members or editing loans. In a browser, anyone can open DevTools and copy the key from the page’s code or network requests, giving them full access to the whole database. The secret key belongs only on a trusted server, and only the publishable key should be used in client code.,
 
 
