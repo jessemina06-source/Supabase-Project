@@ -66,4 +66,18 @@ The postgres role owns the tables and has the BYPASSRLS attribute, so Postgres n
 
 The secret key maps to the service_role, which bypasses RLS, so every policy would be skipped and the request could read, change, or delete any row in any table. That includes actions our rules forbid, such as deleting members or editing loans. In a browser, anyone can open DevTools and copy the key from the page’s code or network requests, giving them full access to the whole database. The secret key belongs only on a trusted server, and only the publishable key should be used in client code.,
 
+1. Which rules are enforced by grants, policies, and constraints?
 
+Grants: Control what each role is allowed to do. Visitors (anon) can read notices but cannot insert. Authenticated users can read and insert notices.
+
+Policies: Control which rows users can access. Visitors can only see published notices. Authenticated users can see published notices and their own notices. They can only insert notices using their own user ID.
+
+Constraints: Protect the data in the database. Notice titles must have 5–100 characters, required fields cannot be empty, and author_id must reference a valid user.
+
+2. Why do visitor results look different from what the direct connection can see?
+
+Visitors use the anon role, so Row Level Security (RLS) limits them to published notices only. A direct connection through the Supabase Dashboard SQL Editor uses a privileged database role that can see more records, including unpublished notices. This is why their results can be different.
+
+3. Which connection type did we choose for the direct route, and why?
+
+For our Laravel routes, we chose the Supabase REST API connection using the Publishable Key. We used Laravel's HTTP Client to send requests to Supabase. This allows our Laravel application to access the database without exposing database credentials. RLS still controls which records can be accessed.
